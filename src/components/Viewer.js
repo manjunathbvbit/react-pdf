@@ -25,8 +25,8 @@ export const Viewer = () => {
       
           canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
-          canvas.style.width = Math.floor(viewport.width) + "px";
-          canvas.style.height = Math.floor(viewport.height) + "px";
+        //   canvas.style.width = Math.floor(viewport.width) + "px";
+        //   canvas.style.height = Math.floor(viewport.height) + "px";
       
           const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
     
