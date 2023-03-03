@@ -1,11 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import * as pdfjsLib from 'pdfjs-dist';
 
-export const Viewer = () => {
-    const canvasRef = useRef(null);
-    console.log("Pdf: ", pdfjsLib)
-    
+export const Viewer = (props) => {
+    // const [scale, setScale] = useState(1.5);
+
+    // const ZoomIn = () => {
+    //   setScale(scale - 0.25)
+    // }
+    // const ZoomOut = () => {
+    //   setScale(scale + 0.25)
+    // }
+
     pdfjsLib.GlobalWorkerOptions.workerSrc ='./pdf.worker.js';
     useEffect(() => {
         const url = '/sample.pdf';
@@ -14,7 +20,8 @@ export const Viewer = () => {
             
             const pdf = await loadingTask.promise;
           const page = await pdf.getPage(1);
-          const scale = 1.5;
+          var scale = props.scale;
+   console.log("Sca: ", scale)
           const viewport = page.getViewport({ scale });
         
           const outputScale = window.devicePixelRatio || 1;
@@ -25,19 +32,23 @@ export const Viewer = () => {
       
           canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
-        //   canvas.style.width = Math.floor(viewport.width) + "px";
-        //   canvas.style.height = Math.floor(viewport.height) + "px";
+          canvas.style.width = Math.floor(viewport.width) + "px";
+          canvas.style.height = Math.floor(viewport.height) + "px";
       
           const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
     
           const renderContext = {canvasContext: context, transform, viewport};
           page.render(renderContext);
         })();
-    }, [])
+    }, [props.scale])
 
     return (
         <div>
-            <h1>Wel come to Viewer page</h1>
+            {/* <div className="toolbar" >
+                <button onClick={ZoomIn}>-</button>
+                <button onClick={ZoomOut}>+</button>
+            </div> */}
+            <br/>
             <canvas id="the-canvas" style={{border: "1px solid black", direction: "ltr",}}></canvas>
         </div>
     )
